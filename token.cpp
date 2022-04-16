@@ -1,5 +1,4 @@
-#include <string>
-
+// Unknown tokens are represented by their ASCII code
 enum Token {
 	tok_eof = -1,
 
@@ -12,7 +11,7 @@ enum Token {
 	tok_number = -5,
 };
 
-static std::string IdentifierStr;
+static string IdentifierStr;
 static double NumVal;
 
 static int gettok() {
@@ -32,7 +31,7 @@ static int gettok() {
 	}
 
 	if (isdigit(LastChar) || LastChar == '.') {
-		std::string NumStr;
+		string NumStr;
 		do {
 			NumStr += LastChar;
 			LastChar = getchar();
