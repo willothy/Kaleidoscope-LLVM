@@ -1,51 +1,61 @@
 #include <iostream>
+#include <memory>
+#include <vector>
+#include <string>
+#include <map>
 
-#include "parser.cpp"
+#include "header/token.h"
+#include "header/parser.h"
 
-using std::cout;
+using namespace Tokenizer;
+using namespace Parser;
 
 // Top-level parsing
 static void HandleDefinition() {
     if (ParseDefinition()) {
         fprintf(stderr, "Parsed a function definition.\n");
-    } else {
-        getNextToken(); // Skip token for error recovery
+    }
+    else {
+        GetNextToken(); // Skip token for error recovery
     }
 }
 
 static void HandleExtern() {
-    if (ParseDefinition()) {
+    if (ParseExtern()) {
         fprintf(stderr, "Parsed a function definition.\n");
-    } else {
-        getNextToken(); // Skip token for error recovery
+    }
+    else {
+        GetNextToken(); // Skip token for error recovery
     }
 }
 
 static void HandleTopLevelExpression() {
-    if (ParseDefinition()) {
+    if (ParseTopLevelExpr()) {
         fprintf(stderr, "Parsed a function definition.\n");
-    } else {
-        getNextToken(); // Skip token for error recovery
+    }
+    else {
+        GetNextToken(); // Skip token for error recovery
     }
 }
 
 static void MainLoop() {
-    while(true) {
+    while (true) {
         fprintf(stderr, "ready> ");
-        switch(CurTok) {
-            case tok_eof: return;
-            case ';':
-                getNextToken();
-                break;
-            case tok_def:
-                HandleDefinition();
-                break;
-            case tok_extern:
-                HandleExtern();
-                break;
-            default:
-                HandleTopLevelExpression();
-                break;
+        switch (CurTok) {
+        case tok_eof:
+            return;
+        case ';':
+            GetNextToken();
+            break;
+        case tok_def:
+            HandleDefinition();
+            break;
+        case tok_extern:
+            HandleExtern();
+            break;
+        default:
+            HandleTopLevelExpression();
+            break;
         }
     }
 }
@@ -53,9 +63,9 @@ static void MainLoop() {
 int main() {
 
     fprintf(stderr, "ready> ");
-    getNextToken();
+    Parser::GetNextToken();
 
     MainLoop();
-    
+
     return 0;
 }
