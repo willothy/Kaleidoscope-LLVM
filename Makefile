@@ -1,2 +1,2 @@
 build:
-	clang++ -g *.cpp -o ./bin/mylang
+	clang++ -g ./src/*.cpp -o ./bin/mylang

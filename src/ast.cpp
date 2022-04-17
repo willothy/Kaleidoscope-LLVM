@@ -1,4 +1,4 @@
-#include "header/ast.h"
+#include "../header/ast.h"
 
 namespace AST {
     ExprAST::~ExprAST() = default;

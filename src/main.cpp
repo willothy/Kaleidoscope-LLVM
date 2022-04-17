@@ -4,8 +4,8 @@
 #include <string>
 #include <map>
 
-#include "header/token.h"
-#include "header/parser.h"
+#include "../header/token.h"
+#include "../header/parser.h"
 
 using namespace Tokenizer;
 using namespace Parser;
