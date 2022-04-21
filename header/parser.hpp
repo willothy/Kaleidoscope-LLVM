@@ -1,10 +1,5 @@
 #pragma once
 
-#include <string>
-#include <vector>
-#include <memory>
-#include <iostream>
-
 #include "ast.hpp"
 
 // Unknown tokens are represented by their ASCII code

@@ -1,30 +1,6 @@
-#include "ast.hpp"
 #include "parser.hpp"
 #include "error.hpp"
 
-
-llvm::Function* functionIsValid(llvm::Function &TheFunction) {
-    unsigned ArgsSize = TheFunction.arg_size();
-
-    llvm::Function* Proto = TheModule->getFunction(TheFunction.getName());
-
-    // Check that prototype and definition have the same number of arguments
-    if (ArgsSize != Proto->arg_size()) {
-        TheFunction.eraseFromParent(); // Handle error by removing function
-        return Error::LogErrorF("Function prototype and definition must have the same number of arguments");
-    }
-
-    // Check that the names of the arguments are the same between TheFunction and Proto
-    for (unsigned i = 0; i < ArgsSize; ++i) {
-        if (TheFunction.getArg(i)->getName() == Proto->getArg(i)->getName()) {
-            TheFunction.eraseFromParent();            
-            return Error::LogErrorF("Function argument names must match in the function's prototype and definition.");
-        }
-    }
-    
-    // Passed checks, function is valid
-    return &TheFunction;
-}
 
 llvm::Value* NumberExprAST::codegen() {
     return llvm::ConstantFP::get(*TheContext, llvm::APFloat(Val));
@@ -117,8 +93,9 @@ llvm::Function* FunctionAST::codegen() {
     if (llvm::Value* RetVal = Body->codegen()) {
         Builder->CreateRet(RetVal);
 
-        // Validate the generated code
-        //return functionIsValid(*TheFunction);
+        // Validate the generated code (from llvm/IR/Verifier.h)
+        llvm::verifyFunction(*TheFunction);
+        
         return TheFunction;
     }
 

@@ -10,7 +10,9 @@
 #include "llvm/IR/LLVMContext.h"
 #include "llvm/IR/Module.h"
 #include "llvm/IR/Type.h"
+#include "llvm/IR/Verifier.h"
 
+#include <iostream>
 #include <string>
 #include <vector>
 #include <memory>

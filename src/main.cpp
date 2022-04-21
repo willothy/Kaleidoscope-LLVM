@@ -1,10 +1,3 @@
-#include <iostream>
-#include <memory>
-#include <vector>
-#include <string>
-#include <map>
-
-
 #include "parser.hpp"
 
 std::unique_ptr<llvm::LLVMContext> TheContext;
@@ -101,6 +94,5 @@ int main(int argc, char** argv) {
     Driver driver{};
     
     driver.Init();
-
     return 0;
 }
