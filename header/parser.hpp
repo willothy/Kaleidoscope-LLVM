@@ -10,6 +10,7 @@
 // Unknown tokens are represented by their ASCII code
 enum Token {
 	tok_eof = -1,
+    tok_newline = -6,
 
 	// commands
 	tok_def = -2,
@@ -17,7 +18,7 @@ enum Token {
 
 	// primary
 	tok_identifier = -4,
-	tok_number = -5,
+	tok_number = -5
 };
 
 class Parser {
@@ -32,10 +33,6 @@ public:
     int GetNextToken();
 
     int GetTokPrecedence();
-
-    std::unique_ptr<ExprAST> LogError(const char* Str);
-
-    std::unique_ptr<PrototypeAST> LogErrorP(const char* Str);
     
     std::unique_ptr<ExprAST> ParseNumberExpr();
 

@@ -1,4 +1,5 @@
-#include "../header/parser.hpp"
+#include "parser.hpp"
+#include "error.hpp"
 
 int Parser::gettok() {
     static int LastChar = ' ';
@@ -68,16 +69,6 @@ int Parser::GetTokPrecedence() {
     }
 }
 
-std::unique_ptr<ExprAST> Parser::LogError(const char* Str) {
-    fprintf(stderr, "LogError: %s\n", Str);
-    return nullptr;
-}
-
-std::unique_ptr<PrototypeAST> Parser::LogErrorP(const char* Str) {
-    LogError(Str);
-    return nullptr;
-}
-
 std::unique_ptr<ExprAST> Parser::ParseNumberExpr() {
     // Not sure why auto is used here. I'll leave it for now, but maybe unique_ptr<ExprAST> instead?
     auto Result = std::make_unique<NumberExprAST>(NumVal);
@@ -92,7 +83,7 @@ std::unique_ptr<ExprAST> Parser::ParseParenExpr() {
         return nullptr;
 
     if (CurTok != ')')
-        return LogError("Expected ')'");
+        return Error::LogError("Expected ')'");
     GetNextToken(); // eat )
     return V;
 }
@@ -118,7 +109,7 @@ std::unique_ptr<ExprAST> Parser::ParseIdentifierOrCallExpr() {
             if (CurTok == ')')
                 break;
             if (CurTok != ',')
-                return LogError("Expected ')' or ',' in argument list");
+                return Error::LogError("Expected ')' or ',' in argument list");
             GetNextToken(); // Eat ,
         }
     }
@@ -131,7 +122,7 @@ std::unique_ptr<ExprAST> Parser::ParseIdentifierOrCallExpr() {
 std::unique_ptr<ExprAST> Parser::ParsePrimary() {
     switch (CurTok) {
     default:
-        return LogError("Unknown token when expecting an expression");
+        return Error::LogError("Unknown token when expecting an expression");
     case tok_identifier:
         return ParseIdentifierOrCallExpr();
     case tok_number:
@@ -175,13 +166,13 @@ std::unique_ptr<ExprAST> Parser::ParseExpression() {
 
 std::unique_ptr<PrototypeAST> Parser::ParsePrototype() {
     if (CurTok != tok_identifier)
-        return LogErrorP("Expected function name in prototype");
+        return Error::LogErrorP("Expected function name in prototype");
 
     std::string FnName = IdentifierStr;
     GetNextToken();
 
     if (CurTok != '(') {
-        return LogErrorP("Expected '(' in function prototype.");
+        return Error::LogErrorP("Expected '(' in function prototype.");
     }
 
     // read list of argument names
@@ -190,7 +181,7 @@ std::unique_ptr<PrototypeAST> Parser::ParsePrototype() {
         ArgNames.push_back(IdentifierStr);
     if (CurTok != ')') {
         std::cout << CurTok << std::endl;
-        return LogErrorP("Expected ')' in function prototype.");
+        return Error::LogErrorP("Expected ')' in function prototype.");
     }
 
     GetNextToken(); // eat )

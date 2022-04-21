@@ -1,3 +1,7 @@
 .env.json
 .vscode/**
-bin/**
+build/**
+
+
+their-code.cpp
+theirlang

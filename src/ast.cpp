@@ -1,6 +1,6 @@
-#include "../header/ast.hpp"
+#include "ast.hpp"
 
-ExprAST::~ExprAST() = default;
+
 
 NumberExprAST::NumberExprAST(double V)
     : Val(V) {}
