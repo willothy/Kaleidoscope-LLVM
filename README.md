@@ -4,16 +4,22 @@ Following along with the "My First Language Frontend with LLVM" tutorial from LL
 
 Example usage (from LLVM.org)
 
-    $ ./a.out
-    ready> def foo(x y) x+foo(y, 4.0);
-    Parsed a function definition.
-    ready> def foo(x y) x+y y;
-    Parsed a function definition.
-    Parsed a top-level expr
-    ready> def foo(x y) x+y );
-    Parsed a function definition.
-    Error: unknown token when expecting an expression
-    ready> extern sin(a);
-    ready> Parsed an extern
-    ready> ^D
-    $
+    $ ready> 2 + 2;
+    Read top-level expression:
+    define double @__anon_expr() {
+    entry:
+      ret double 4.000000e+00
+    }
+
+    $ ready> extern test();
+    Read extern:
+    declare double @test()
+
+    $ ready> def main(x) test() + x;
+    Parsed a function definition:
+    define double @main(double %x) {
+    entry:
+      %calltmp = call double @test()
+      %addtmp = fadd double %calltmp, %x
+      ret double %addtmp
+    }
