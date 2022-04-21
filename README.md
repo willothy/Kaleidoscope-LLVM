@@ -1,4 +1,4 @@
-# LLVM-Tutorial
+# Kaleidoscope-LLVM
 
 Following along with the "My First Language Frontend with LLVM" tutorial from LLVM.org.
 
